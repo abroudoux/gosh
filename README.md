@@ -1,0 +1,3 @@
+# gosh
+
+🐚 Minimalist shell
