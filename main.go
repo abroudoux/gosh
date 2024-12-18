@@ -9,6 +9,7 @@ import (
 )
 
 func main() {
+	printPwd()
 	fmt.Print("> ")
 	input, err := readInput()
 	if err != nil {
@@ -48,5 +49,16 @@ func execCommand(input string) error {
 		return fmt.Errorf("error executing command: %v", err)
 	}
 
+	return nil
+}
+
+func printPwd() error {
+	cmd := exec.Command("pwd")
+	pwd, err := cmd.Output()
+	if err != nil {
+		return fmt.Errorf("error executing command: %v", err)
+	}
+
+	fmt.Print(string(pwd))
 	return nil
 }
