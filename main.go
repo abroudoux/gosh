@@ -10,7 +10,11 @@ import (
 
 func main() {
 	history := initHistory()
-	printUi()
+	err := printUi()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
 
 	input, err := readInput()
 	if err != nil {
@@ -19,7 +23,7 @@ func main() {
 	}
 
 	for {
-		err := execCommand(input)
+		err := execCommand(input, history)
 		if err != nil {
 			fmt.Println(err)
 		}
@@ -49,6 +53,9 @@ func execCommand(input string) error {
 			return fmt.Errorf("cd: missing argument")
 		}
 		return os.Chdir(args[1])
+	case "up":
+		println("up")
+		os.Exit(0)
 	case "exit":
 		os.Exit(0)
 	}
@@ -75,9 +82,14 @@ func printPwd() error {
 	return nil
 }
 
-func printUi() {
-	printPwd()
+func printUi() error {
+	err := printPwd()
+	if err != nil {
+		return err
+	}
+
 	fmt.Print("> ")
+	return nil
 }
 
 type History struct {
@@ -90,5 +102,13 @@ func initHistory() History {
 }
 
 func (history *History) addCommand(command string) {
-	history.commands = append(history.commands, command)
+	lastCommand := history.getLastCommand()
+
+	if (command != lastCommand) {
+		history.commands = append(history.commands, command)
+	}
+}
+
+func (history *History) getLastCommand() string {
+	return history.commands[len(history.commands)-1]
 }
