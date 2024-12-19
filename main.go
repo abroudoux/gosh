@@ -10,6 +10,11 @@ import (
 
 func main() {
 	history := initHistory()
+
+	startShell(history)
+}
+
+func startShell(history History) {
 	err := printUi()
 	if err != nil {
 		fmt.Println(err)
@@ -29,7 +34,7 @@ func main() {
 		}
 
 		history.addCommand(input)
-		main()
+		startShell(history)
 	}
 }
 
@@ -43,7 +48,7 @@ func readInput() (string, error) {
 	return string(input), nil
 }
 
-func execCommand(input string) error {
+func execCommand(input string, history History) error {
 	input = strings.TrimSuffix(input, "\n")
 	args := strings.Split(input, " ")
 
@@ -53,9 +58,9 @@ func execCommand(input string) error {
 			return fmt.Errorf("cd: missing argument")
 		}
 		return os.Chdir(args[1])
-	case "up":
-		println("up")
-		os.Exit(0)
+	case "history":
+		history.printHistory()
+		return nil
 	case "exit":
 		os.Exit(0)
 	}
@@ -104,11 +109,26 @@ func initHistory() History {
 func (history *History) addCommand(command string) {
 	lastCommand := history.getLastCommand()
 
-	if (command != lastCommand) {
+	if (command != lastCommand) {	
 		history.commands = append(history.commands, command)
 	}
 }
 
 func (history *History) getLastCommand() string {
+	if (len(history.commands) == 0) {
+		return ""
+	}
+
 	return history.commands[len(history.commands)-1]
+}
+
+func (history *History) printHistory() {
+	if (len(history.commands) == 0) {
+		fmt.Println("No commands in history")
+		return
+	}
+
+	for _, command := range history.commands {
+		fmt.Println(command)
+	}
 }
