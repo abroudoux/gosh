@@ -9,8 +9,9 @@ import (
 )
 
 func main() {
-	printPwd()
-	fmt.Print("> ")
+	history := initHistory()
+	printUi()
+
 	input, err := readInput()
 	if err != nil {
 		fmt.Println(err)
@@ -23,6 +24,7 @@ func main() {
 			fmt.Println(err)
 		}
 
+		history.addCommand(input)
 		main()
 	}
 }
@@ -54,7 +56,6 @@ func execCommand(input string) error {
 	cmd := exec.Command(args[0], args[1:]...)
 	cmd.Stderr = os.Stderr
 	cmd.Stdout = os.Stdout
-
 	err := cmd.Run()
 	if err != nil {
 		return fmt.Errorf("error executing command: %v", err)
@@ -72,4 +73,22 @@ func printPwd() error {
 
 	fmt.Print(string(pwd))
 	return nil
+}
+
+func printUi() {
+	printPwd()
+	fmt.Print("> ")
+}
+
+type History struct {
+	commands []string
+}
+
+func initHistory() History {
+	history := History{}
+	return history
+}
+
+func (history *History) addCommand(command string) {
+	history.commands = append(history.commands, command)
 }
