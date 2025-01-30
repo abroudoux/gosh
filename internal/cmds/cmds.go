@@ -24,7 +24,10 @@ func ExecCommand(input string, history History) error {
 	case "history":
 		history.PrintHistory()
 		return nil
-	case "exit":
+	case "help":
+		printHelp()
+		return nil
+	case "exit", "quit":
 		os.Exit(0)
 	}
 
@@ -33,8 +36,16 @@ func ExecCommand(input string, history History) error {
 	cmd.Stdout = os.Stdout
 	err := cmd.Run()
 	if err != nil {
-		return fmt.Errorf("error executing command: %v", err)
+		return err
 	}
 
 	return nil
+}
+
+
+func printHelp() {
+	fmt.Println("cd <directory>: change working directory")
+	fmt.Println("history: print command history")
+	fmt.Println("help: print this help message")
+	fmt.Println("exit or quit: exit the shell")
 }

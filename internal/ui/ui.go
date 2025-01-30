@@ -9,7 +9,7 @@ func printPwd() error {
 	cmd := exec.Command("pwd")
 	pwd, err := cmd.Output()
 	if err != nil {
-		return fmt.Errorf("error executing command: %v", err)
+		return err
 	}
 
 	fmt.Print(string(pwd))

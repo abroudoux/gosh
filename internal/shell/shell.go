@@ -40,7 +40,7 @@ func readInput() (string, error) {
 	reader := bufio.NewReader(os.Stdin)
 	input, err := reader.ReadString('\n')
 	if err != nil {
-		return "", fmt.Errorf("error reading input: %v", err)
+		return "", err
 	}
 
 	return string(input), nil

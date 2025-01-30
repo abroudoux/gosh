@@ -13,14 +13,14 @@ func InitHistory() History {
 }
 
 func (history *History) AddCommand(command string) {
-	lastCommand := history.GetLastCommand()
+	lastCommand := history.getLastCommand()
 
 	if (command != lastCommand) {	
 		history.commands = append(history.commands, command)
 	}
 }
 
-func (history *History) GetLastCommand() string {
+func (history *History) getLastCommand() string {
 	if (len(history.commands) == 0) {
 		return ""
 	}
