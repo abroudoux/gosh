@@ -11,10 +11,10 @@ import (
 )
 
 func main() {
-	StartGosh()
+	Gosh()
 }
 
-func StartGosh() {
+func Gosh() {
 	err := PrintUi()
 	if err != nil {
 		log.Fatal(err)
@@ -30,7 +30,7 @@ func StartGosh() {
 	for {
 		err := ExecCommand(input)
 		log.Error(err)
-		StartGosh()
+		Gosh()
 	}
 }
 
