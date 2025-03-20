@@ -3,9 +3,8 @@ version: "3"
 tasks:
   build:
     cmds:
-      - go build -o bin/gosh cmd/main.go
+      - go build -o bin/gosh gosh.go
 
   run:
     cmds:
       - task build && ./bin/gosh
-

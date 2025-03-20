@@ -6,7 +6,7 @@
 
 - [ ] Pipe operator
 - [ ] Aliases
-- [ ] Ui personalization
+- [ ] Improve ui
 
 ## License
 
